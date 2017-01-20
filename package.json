@@ -1,0 +1,32 @@
+{
+  "name": "app-flowershop-logger",
+  "version": "1.0.0",
+  "description": "Logger service",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "build": "node_modules/.bin/tsc",
+    "build:w": "node_modules/.bin/tsc -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jaystack/app-flowershop-logger.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jaystack/app-flowershop-logger/issues"
+  },
+  "homepage": "https://github.com/jaystack/app-flowershop-logger#readme",
+  "devDependencies": {
+    "@types/winston": "^2.2.0",
+    "typescript": "^2.1.5"
+  },
+  "dependencies": {
+    "config": "^1.24.0",
+    "express": "^4.14.0",
+    "rascal": "^1.0.0",
+    "winston": "^2.3.0"
+  }
+}
