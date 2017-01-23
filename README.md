@@ -1,2 +1,2 @@
-# app-flowershop-logger
+# service-flowershop-logger
 Logger service

@@ -1,7 +1,6 @@
 import * as winston from 'winston';
 import * as config from 'config';
 import * as rascal from 'rascal';
-import * as express from 'express';
 
 function promisifyCreateBroker(rascal: any, rascalConfig: any) {
   return new Promise((resolve, reject) => {
