@@ -36,7 +36,6 @@ function subscribe(broker: any, queueName: string, logger: any): Promise<void> {
 
 function messageHandler(msg: any, content: any, ackOrNack: Function, logger: any) {
   const logObj = JSON.parse(content);
-  console.log(logObj);
   logger.log(logObj.logLevel, logObj.message);
   return ackOrNack();
 }
@@ -74,5 +73,5 @@ export default async function main() {
     exitOnError: false
   });
   const broker = await promisifyCreateBroker(rascal, rascal.withDefaultConfig(config.get('rascal')));
-  subscribe(broker, config.get('loggerQueueName'), logger);
+  subscribe(broker, <string>config.get('loggerQueueName'), logger);
 }
