@@ -1,10 +1,10 @@
-{
+const path = require('path')
+module.exports = {
+  "systemEndpoints": path.normalize(__dirname + "/../system-endpoints.json"),
   "rascal": {
     "vhosts": {
       "flowershop": {
         "connection": {
-          "slashes": true,
-          "protocol": "amqp",
           "hostname": "localhost",
           "user": "guest",
           "password": "guest",

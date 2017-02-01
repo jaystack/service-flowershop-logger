@@ -1,6 +1,8 @@
 import * as winston from 'winston';
 import * as config from 'config';
 import * as rascal from 'rascal';
+import { getServiceEndPoint } from 'system-endpoints'
+import { stringify } from 'querystring'
 
 function promisifyCreateBroker(rascal: any, rascalConfig: any) {
   return new Promise((resolve, reject) => {
@@ -63,6 +65,19 @@ function getConsoleConfig() {
   };
 }
 
+function createRascalConnectionString({user, password, vhost, hostname, port, options}, endpointAddress) {
+  const address = endpointAddress ? `${endpointAddress.host}:${endpointAddress.port}` : `${hostname}:${port}`;
+  const optionString = stringify(options);
+  return `amqp://${user}:${password}@${address}/${vhost}?${optionString}`
+}
+
+async function createBroker(rascalConfig) {
+  const endpointAddress = getServiceEndPoint('localhost:5672');
+  const connection = createRascalConnectionString(rascalConfig.vhosts.flowershop.connection, endpointAddress)
+  const config = { vhosts: { flowershop: { ...rascalConfig.vhosts.flowershop, connection } } };
+  return await promisifyCreateBroker(rascal, rascal.withDefaultConfig(config));
+}
+
 export default async function main() {
   const logger = new winston.Logger({
     transports: [
@@ -71,6 +86,7 @@ export default async function main() {
     ],
     exitOnError: false
   });
-  const broker = await promisifyCreateBroker(rascal, rascal.withDefaultConfig(config.get('rascal')));
+  const rascalConfig = config.get('rascal');
+  const broker = await createBroker(rascalConfig);
   subscribe(broker, <string>config.get('loggerQueueName'), logger);
 }
