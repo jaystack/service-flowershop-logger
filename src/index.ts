@@ -1,7 +1,7 @@
 import * as winston from 'winston';
 import * as config from 'config';
 import * as rascal from 'rascal';
-import { getServiceEndPoint } from 'system-endpoints'
+import { getServiceAddress } from 'system-endpoints'
 import { stringify } from 'querystring'
 
 function promisifyCreateBroker(rascal: any, rascalConfig: any) {
@@ -65,15 +65,16 @@ function getConsoleConfig() {
   };
 }
 
-function createRascalConnectionString({user, password, vhost, hostname, port, options}, endpointAddress) {
-  const address = endpointAddress ? `${endpointAddress.host}:${endpointAddress.port}` : `${hostname}:${port}`;
+function createRascalConnectionString({user, password, vhost, hostname, port, options}, endpointAddress: string) {
+  const address = endpointAddress || `${hostname}:${port}`;
   const optionString = stringify(options);
   return `amqp://${user}:${password}@${address}/${vhost}?${optionString}`
 }
 
 async function createBroker(rascalConfig) {
-  const endpointAddress = getServiceEndPoint('localhost:5672');
+  const endpointAddress = getServiceAddress('localhost:5672');
   const connection = createRascalConnectionString(rascalConfig.vhosts.flowershop.connection, endpointAddress)
+  console.log(connection)
   const config = { vhosts: { flowershop: { ...rascalConfig.vhosts.flowershop, connection } } };
   return await promisifyCreateBroker(rascal, rascal.withDefaultConfig(config));
 }

@@ -1,6 +1,9 @@
 const path = require('path')
 module.exports = {
-  "systemEndpoints": path.normalize(__dirname + "/../system-endpoints.json"),
+  "systemEndpoints": {
+    "sync": true,
+    "host": path.normalize(__dirname + "/../system-endpoints.json")
+  },
   "rascal": {
     "vhosts": {
       "flowershop": {
