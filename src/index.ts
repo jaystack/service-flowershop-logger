@@ -74,7 +74,6 @@ function createRascalConnectionString({user, password, vhost, hostname, port, op
 async function createBroker(rascalConfig) {
   const endpointAddress = getServiceAddress('localhost:5672');
   const connection = createRascalConnectionString(rascalConfig.vhosts.flowershop.connection, endpointAddress)
-  console.log(connection)
   const config = { vhosts: { flowershop: { ...rascalConfig.vhosts.flowershop, connection } } };
   return await promisifyCreateBroker(rascal, rascal.withDefaultConfig(config));
 }
