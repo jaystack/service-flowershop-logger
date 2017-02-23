@@ -21,7 +21,7 @@
   "homepage": "https://github.com/jaystack/service-flowershop-logger#readme",
   "devDependencies": {
     "@types/winston": "^2.2.0",
-    "typescript": "^2.1.5"
+    "typescript": "2.1.5"
   },
   "dependencies": {
     "config": "^1.24.0",
