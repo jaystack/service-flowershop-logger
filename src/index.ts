@@ -4,7 +4,7 @@ import * as rascal from 'rascal';
 import { getServiceAddress } from 'system-endpoints'
 import { stringify } from 'querystring'
 
-function promisifyCreateBroker(rascal: any, rascalConfig: any) {
+const promisifyCreateBroker = (rascal: any, rascalConfig: any) => {
   return new Promise((resolve, reject) => {
     return rascal.createBroker(rascalConfig, {}, (err: Error, broker: any) => {
       if (err) {
@@ -17,7 +17,7 @@ function promisifyCreateBroker(rascal: any, rascalConfig: any) {
   });
 }
 
-function subscribe(broker: any, queueName: string, logger: any): Promise<void> {
+const subscribe = (broker: any, queueName: string, logger: any): Promise<void> => {
   return new Promise<void>((resolve: Function, reject: Function) => {
     broker.subscribe(queueName, (err: Error, subscription: any) => {
       if (err) {
@@ -35,13 +35,13 @@ function subscribe(broker: any, queueName: string, logger: any): Promise<void> {
   });
 }
 
-function messageHandler(msg: any, content: any, ackOrNack: Function, logger: any) {
+const messageHandler = (msg: any, content: any, ackOrNack: Function, logger: any) => {
   const logObj = JSON.parse(content);
   logger.log(logObj.logLevel, logObj.message);
   return ackOrNack();
 }
 
-function getFileConfig() {
+const getFileConfig = () => {
   return {
     level: "info",
     filename: "all-logs.log",
@@ -51,27 +51,27 @@ function getFileConfig() {
     maxsize: 5242880,
     maxFiles: 5,
     colorize: false,
-    timestamp: true
+    timestamp: true,
   };
 }
 
-function getConsoleConfig() {
+const getConsoleConfig = () => {
   return {
     level: "debug",
     handleExceptions: true,
     json: false,
     colorize: true,
-    timestamp: true
+    timestamp: true,
   };
 }
 
-function createRascalConnectionString({user, password, vhost, hostname, port, options}, endpointAddress: string) {
+const createRascalConnectionString = ({ user, password, vhost, hostname, port, options }, endpointAddress: string) => {
   const address = endpointAddress || `${hostname}:${port}`;
   const optionString = stringify(options);
   return `amqp://${user}:${password}@${address}/${vhost}?${optionString}`
 }
 
-async function createBroker(rascalConfig) {
+const createBroker = async (rascalConfig) => {
   const endpointAddress = getServiceAddress('localhost:5672');
   const connection = createRascalConnectionString(rascalConfig.vhosts.flowershop.connection, endpointAddress)
   const config = { vhosts: { flowershop: { ...rascalConfig.vhosts.flowershop, connection } } };
@@ -82,11 +82,11 @@ export default async function main() {
   const logger = new winston.Logger({
     transports: [
       new winston.transports.File(getFileConfig()),
-      new winston.transports.Console(getConsoleConfig())
+      new winston.transports.Console(getConsoleConfig()),
     ],
-    exitOnError: false
+    exitOnError: false,
   });
   const rascalConfig = config.get('rascal');
   const broker = await createBroker(rascalConfig);
-  subscribe(broker, <string>config.get('loggerQueueName'), logger);
+  subscribe(broker, <string> config.get('loggerQueueName'), logger);
 }
