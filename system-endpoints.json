@@ -1,0 +1,12 @@
+{
+  "currentHost": "localhost",
+  "hosts": [
+    {
+      "alias": "localhost:5672",
+      "endpoint": {
+        "host": "localhost",
+        "port": "5672"
+      }
+    }
+  ]
+}
