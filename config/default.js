@@ -1,40 +1,44 @@
-const path = require('path')
+const { transports } = require('corpjs-logger')
+
 module.exports = {
-  "systemEndpoints": {
-    "sync": true,
-    "host": path.normalize(__dirname + "/../system-endpoints.json")
+
+  endpoints: {
+    endpointsFilePath: 'system-endpoints.json'
   },
-  "rascal": {
-    "vhosts": {
-      "flowershop": {
-        "connection": {
-          "hostname": "localhost",
-          "user": "guest",
-          "password": "guest",
-          "port": 5672,
-          "vhost": "flowershop",
-          "options": {
-            "heartbeat": 5
-          }
-        },
-        "queues": {
-          "loggerMQ": {
-            "options": {
-              "arguments": {
-                "x-message-ttl": 60000,
-                "x-max-length": 5000
-              }
-            }
-          }
-        },
-        "subscriptions": {
-          "loggerMQ": {
-            "queue": "loggerMQ"
-          }
-        }
-      }
+
+  logger: {
+    transportFactories: [
+      () => new transports.Console({
+        level: "debug",
+        handleExceptions: true,
+        json: false,
+        colorize: true,
+        timestamp: true
+      }),
+      () => new transports.File({
+        level: "info",
+        filename: "all-logs.log",
+        fullFilePath: "",
+        handleExceptions: true,
+        json: true,
+        maxsize: 5242880,
+        maxFiles: 5,
+        colorize: false,
+        timestamp: true
+      })
+    ]
+  },
+
+  rabbit: {
+    connection: {
+      username: 'guest',
+      password: 'guest'
     }
   },
-  "defer": 1000,
-  "loggerQueueName": "loggerMQ"
+
+  messaging: {
+    requestQueue: 'loggerMQ',
+    deadLetterExchange: 'service-flowershop-logger-dlx'
+  }
+
 }
