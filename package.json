@@ -15,16 +15,16 @@
     "start": "node ."
   },
   "dependencies": {
-    "corpjs-amqp": "~0.0.6",
-    "corpjs-config": "~0.0.11",
-    "corpjs-endpoints": "~0.0.13",
-    "corpjs-logger": "~0.0.13",
-    "corpjs-system": "~0.0.35"
+    "corpjs-amqp": "0.0.6",
+    "corpjs-config": "0.0.11",
+    "corpjs-endpoints": "0.0.13",
+    "corpjs-logger": "0.0.13",
+    "corpjs-system": "0.0.36"
   },
   "devDependencies": {
-    "@types/mocha": "^2.2.39",
-    "@types/node": "^7.0.5",
-    "mocha": "^3.2.0",
-    "typescript": "^2.2.0"
+    "@types/mocha": "2.2.39",
+    "@types/node": "7.0.5",
+    "mocha": "3.2.0",
+    "typescript": "2.2.0"
   }
 }
