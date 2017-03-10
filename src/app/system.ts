@@ -8,8 +8,8 @@ import Consumer from './Consumer'
 
 export default new System({ name })
   .add('config', new Config()
-    .add(() => Config.loaders.require({ path: 'config/default.js', watch: true }))
-    .add(() => Config.loaders.require({ path: 'config/test.js', watch: true })))
+    .add(() => Config.loaders.require({ path: 'config/default.js' }))
+    .add(() => Config.loaders.require({ path: 'config/test.js' })))
   .add('endpoints', Endpoints()).dependsOn({ component: 'config', source: 'endpoints', as: 'config' })
   .add('logger', Logger()).dependsOn({ component: 'config', source: 'logger', as: 'config' })
   .add('connection', Amqp.Connection()).dependsOn({ component: 'config', source: 'rabbit', as: 'config' }, 'endpoints')
